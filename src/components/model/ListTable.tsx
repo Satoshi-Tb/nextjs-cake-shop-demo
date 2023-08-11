@@ -13,9 +13,16 @@ import {
 type Props = {
   tableSetting: materialTableInfo[] | cakeTableInfo[];
   itemData: materialInfo[] | cakeInfo[];
+  handleSell: (idx: number) => void;
+  handleSupply: () => void;
 };
 
-export const ListTable = ({ tableSetting, itemData }: Props) => {
+export const ListTable = ({
+  tableSetting,
+  itemData,
+  handleSell,
+  handleSupply,
+}: Props) => {
   return (
     <Table>
       <TableHead>
@@ -35,9 +42,13 @@ export const ListTable = ({ tableSetting, itemData }: Props) => {
                   component="th"
                   scope="row"
                   key={col.label}
-                  onClick={() => alert("1つ売るが押されました")}
                 >
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={item.stock <= 0}
+                    onClick={() => handleSell(rowIdx)}
+                  >
                     1つ売る
                   </Button>
                 </TableCell>
@@ -47,9 +58,12 @@ export const ListTable = ({ tableSetting, itemData }: Props) => {
                   component="th"
                   scope="row"
                   key={col.label}
-                  onClick={() => alert("1つ補充が押されました")}
                 >
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSupply}
+                  >
                     1つ補充する
                   </Button>
                 </TableCell>

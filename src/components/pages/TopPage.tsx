@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -8,10 +8,13 @@ import {
   Tab,
   Box,
 } from "@mui/material";
-import { cakeTableSetting, initialCakeData } from "@/data/cakeData";
+import { cakeTableSetting } from "@/data/cakeData";
 import { ListTable } from "../model/ListTable";
 import commonStyle from "@/styles/commonStyle";
 import { initialMaterialData, materialTableSetting } from "@/data/materialData";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { fundsState } from "../stores/funds";
+import { cakeListState } from "../stores/cake";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,11 +51,28 @@ function a11yProps(index: number) {
 
 export const TopPage = () => {
   const [value, setValue] = useState(0);
-  const [funds, setFunds] = useState(10000);
+  const [funds, setFunds] = useRecoilState(fundsState);
+  const [cakeList, setCakeList] = useRecoilState(cakeListState);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const handleSell = (idx: number) => {
+    const cake = cakeList[idx];
+
+    setCakeList(
+      cakeList.map((cake, i) =>
+        i === idx ? { ...cake, stock: cake.stock - 1 } : cake
+      )
+    );
+
+    setFunds((prev) => prev + cake.price);
+  };
+
+  const handleSupply = () => {};
+
+  useEffect(() => {}, []);
 
   return (
     <ThemeProvider theme={commonStyle}>
@@ -70,7 +90,7 @@ export const TopPage = () => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
-            onChange={handleChange}
+            onChange={handleTabChange}
             aria-label="basic tabs example"
           >
             <Tab label="販売ケーキ一覧" {...a11yProps(0)} />
@@ -80,13 +100,17 @@ export const TopPage = () => {
         <CustomTabPanel value={value} index={0}>
           <ListTable
             tableSetting={cakeTableSetting}
-            itemData={initialCakeData}
+            itemData={cakeList}
+            handleSell={handleSell}
+            handleSupply={handleSupply}
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <ListTable
             tableSetting={materialTableSetting}
             itemData={initialMaterialData}
+            handleSell={() => {}}
+            handleSupply={handleSupply}
           />
         </CustomTabPanel>
       </Box>
