@@ -7,7 +7,7 @@ export const initialMaterialData: materialInfo[] = [
   { name: "小麦粉", price: 50, stock: 15 },
   { name: "牛乳", price: 30, stock: 8 },
   { name: "たまご", price: 30, stock: 15 },
-  { name: "生クリーム", price: 40, stock: 3 },
+  { name: "生クリーム", price: 200, stock: 3 },
   { name: "マロン", price: 100, stock: 4 },
 ];
 

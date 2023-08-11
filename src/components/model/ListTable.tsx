@@ -9,12 +9,15 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { fundsState } from "../stores/funds";
 
 type Props = {
   tableSetting: materialTableInfo[] | cakeTableInfo[];
   itemData: materialInfo[] | cakeInfo[];
   handleSell: (idx: number) => void;
-  handleSupply: () => void;
+  handleSupply: (idx: number) => void;
+  canSupply: (idx: number, funds: number) => boolean;
 };
 
 export const ListTable = ({
@@ -22,7 +25,9 @@ export const ListTable = ({
   itemData,
   handleSell,
   handleSupply,
+  canSupply,
 }: Props) => {
+  const funds = useRecoilValue(fundsState);
   return (
     <Table>
       <TableHead>
@@ -62,7 +67,8 @@ export const ListTable = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleSupply}
+                    onClick={() => handleSupply(rowIdx)}
+                    disabled={!canSupply(rowIdx, funds)}
                   >
                     1つ補充する
                   </Button>

@@ -15,6 +15,7 @@ import { initialMaterialData, materialTableSetting } from "@/data/materialData";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { fundsState } from "../stores/funds";
 import { cakeListState } from "../stores/cake";
+import { materialListState } from "../stores/material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -53,11 +54,13 @@ export const TopPage = () => {
   const [value, setValue] = useState(0);
   const [funds, setFunds] = useRecoilState(fundsState);
   const [cakeList, setCakeList] = useRecoilState(cakeListState);
+  const [materialList, setMaterialList] = useRecoilState(materialListState);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  // 「売る」アクション
   const handleSell = (idx: number) => {
     const cake = cakeList[idx];
 
@@ -70,7 +73,33 @@ export const TopPage = () => {
     setFunds((prev) => prev + cake.price);
   };
 
-  const handleSupply = () => {};
+  // 「補充する」アクション（ケーキ）
+  const handleSupplyCake = (idx: number) => {
+    setCakeList(
+      cakeList.map((cake, i) =>
+        i === idx ? { ...cake, stock: cake.stock + 1 } : cake
+      )
+    );
+  };
+
+  const canSupplyCake = (idx: number, funds: number) => {
+    return true;
+  };
+
+  const handleSupplyMaterial = (idx: number) => {
+    const mat = materialList[idx];
+    setMaterialList(
+      materialList.map((mat, i) =>
+        i === idx ? { ...mat, stock: mat.stock + 1 } : mat
+      )
+    );
+    setFunds((prev) => prev - mat.price);
+  };
+
+  const canSupplyMaterial = (idx: number, funds: number) => {
+    const mat = materialList[idx];
+    return funds >= mat.price;
+  };
 
   useEffect(() => {}, []);
 
@@ -102,15 +131,17 @@ export const TopPage = () => {
             tableSetting={cakeTableSetting}
             itemData={cakeList}
             handleSell={handleSell}
-            handleSupply={handleSupply}
+            handleSupply={handleSupplyCake}
+            canSupply={canSupplyCake}
           />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <ListTable
             tableSetting={materialTableSetting}
-            itemData={initialMaterialData}
+            itemData={materialList}
             handleSell={() => {}}
-            handleSupply={handleSupply}
+            handleSupply={handleSupplyMaterial}
+            canSupply={canSupplyMaterial}
           />
         </CustomTabPanel>
       </Box>
