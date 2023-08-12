@@ -11,11 +11,12 @@ import {
 import { cakeTableSetting } from "@/data/cakeData";
 import { ListTable } from "../model/ListTable";
 import commonStyle from "@/styles/commonStyle";
-import { initialMaterialData, materialTableSetting } from "@/data/materialData";
+import { materialTableSetting } from "@/data/materialData";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { fundsState } from "../stores/funds";
 import { cakeListState } from "../stores/cake";
 import { materialListState } from "../stores/material";
+import { consumeMaterialList } from "@/data/materialData";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -80,12 +81,24 @@ export const TopPage = () => {
         i === idx ? { ...cake, stock: cake.stock + 1 } : cake
       )
     );
+
+    // ケーキ作成にようする素材を減算する
+    setMaterialList((prev) => {
+      if (consumeMaterialList[idx] === undefined) return prev;
+      const reqMat = consumeMaterialList[idx];
+      return prev.map((item, i) =>
+        reqMat[i] === undefined
+          ? item
+          : { ...item, stock: item.stock + reqMat[i] }
+      );
+    });
   };
 
   const canSupplyCake = (idx: number, funds: number) => {
     return true;
   };
 
+  // 「材料する」アクション（ケーキ）
   const handleSupplyMaterial = (idx: number) => {
     const mat = materialList[idx];
     setMaterialList(

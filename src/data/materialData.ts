@@ -17,3 +17,33 @@ export const materialTableSetting: materialTableInfo[] = [
   { label: "在庫数", data: "stock" },
   { label: "在庫を増やす", data: "refill" },
 ];
+
+// スイーツ作成に消費する素材リスト
+export const consumeMaterialList: { [key: number]: { [key: number]: number } } =
+  {
+    // ショートケーキ
+    0: {
+      0: -1,
+      1: -1,
+      2: -1,
+    },
+    // チーズケーキ
+    1: {
+      0: -1,
+      1: -2,
+      2: -1,
+    },
+    // シュークリーム
+    2: {
+      0: -2,
+      2: -1,
+      3: -2,
+    },
+    // ロールケーキ
+    3: {
+      0: -2,
+      1: -1,
+      2: -2,
+      3: -1,
+    },
+  };
