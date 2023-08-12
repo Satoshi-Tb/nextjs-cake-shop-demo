@@ -95,7 +95,13 @@ export const TopPage = () => {
   };
 
   const canSupplyCake = (idx: number, funds: number) => {
-    return true;
+    // 対象とする材料がない場合、NG
+    if (consumeMaterialList[idx] === undefined) return false;
+
+    const reqMat = consumeMaterialList[idx];
+    return materialList.every(
+      (item, i) => reqMat[i] === undefined || item.stock >= Math.abs(reqMat[i])
+    );
   };
 
   // 「材料する」アクション（ケーキ）
