@@ -17,7 +17,7 @@ type Props = {
   itemData: materialInfo[] | cakeInfo[];
   handleSell: (idx: number) => void;
   handleSupply: (idx: number) => void;
-  canSupply: (idx: number, funds: number) => boolean;
+  canSupply: (idx: number) => boolean;
 };
 
 export const ListTable = ({
@@ -68,7 +68,7 @@ export const ListTable = ({
                     variant="contained"
                     color="primary"
                     onClick={() => handleSupply(rowIdx)}
-                    disabled={!canSupply(rowIdx, funds)}
+                    disabled={!canSupply(rowIdx)}
                   >
                     1つ補充する
                   </Button>

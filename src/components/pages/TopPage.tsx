@@ -12,7 +12,7 @@ import { cakeTableSetting } from "@/data/cakeData";
 import { ListTable } from "../model/ListTable";
 import commonStyle from "@/styles/commonStyle";
 import { materialTableSetting } from "@/data/materialData";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { fundsState } from "../stores/funds";
 import { cakeListState } from "../stores/cake";
 import { materialListState } from "../stores/material";
@@ -94,7 +94,7 @@ export const TopPage = () => {
     });
   };
 
-  const canSupplyCake = (idx: number, funds: number) => {
+  const canSupplyCake = (idx: number) => {
     // 対象とする材料がない場合、NG
     if (consumeMaterialList[idx] === undefined) return false;
 
@@ -115,7 +115,7 @@ export const TopPage = () => {
     setFunds((prev) => prev - mat.price);
   };
 
-  const canSupplyMaterial = (idx: number, funds: number) => {
+  const canSupplyMaterial = (idx: number) => {
     const mat = materialList[idx];
     return funds >= mat.price;
   };

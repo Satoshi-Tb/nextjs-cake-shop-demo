@@ -5,6 +5,7 @@ export const initialCakeData: cakeInfo[] = [
   { name: "チーズケーキ", price: 380, stock: 8 },
   { name: "シュークリーム", price: 250, stock: 15 },
   { name: "ロールケーキ", price: 250, stock: 5 },
+  { name: "モンブラン", price: 300, stock: 10 },
 ];
 
 export const cakeTableSetting: cakeTableInfo[] = [

@@ -46,4 +46,11 @@ export const consumeMaterialList: { [key: number]: { [key: number]: number } } =
       2: -2,
       3: -1,
     },
+    // モンブラン
+    4: {
+      0: -2,
+      1: -1,
+      3: -2,
+      4: -1,
+    },
   };
